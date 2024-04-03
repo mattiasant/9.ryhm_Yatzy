@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class Paigutaja {
 
@@ -21,7 +22,7 @@ public class Paigutaja {
                     summa+=2;
                 }
             }
-            m2ngija.setYhed(summa);
+            m2ngija.setKahed(summa);
         }
         else if (kuhu.equals("kolmed")){
             for (T2ring t2ring : t2ringud) {
@@ -29,7 +30,7 @@ public class Paigutaja {
                     summa+=3;
                 }
             }
-            m2ngija.setYhed(summa);
+            m2ngija.setKolmed(summa);
         }
         else if (kuhu.equals("neljad")){
             for (T2ring t2ring : t2ringud) {
@@ -37,7 +38,7 @@ public class Paigutaja {
                     summa+=4;
                 }
             }
-            m2ngija.setYhed(summa);
+            m2ngija.setNeljad(summa);
         }
         else if (kuhu.equals("viied")){
             for (T2ring t2ring : t2ringud) {
@@ -45,7 +46,7 @@ public class Paigutaja {
                     summa+=5;
                 }
             }
-            m2ngija.setYhed(summa);
+            m2ngija.setViied(summa);
         }
         else if (kuhu.equals("kuued")){
             for (T2ring t2ring : t2ringud) {
@@ -53,17 +54,24 @@ public class Paigutaja {
                     summa+=6;
                 }
             }
-            m2ngija.setYhed(summa);
+            m2ngija.setKuued(summa);
         }
         else if (kuhu.equals("paar")) {
-            m2ngija.setPaar(paarSumma(t2ringud));
+            m2ngija.setPaar(paar(t2ringud));
         }
         else if (kuhu.equals("2paar")) {
             m2ngija.setKakspaar(kaksPaar(t2ringud));
+        } else if (kuhu.equals("kolmik")) {
+            m2ngija.setKolmik(kolmikSumma(t2ringud));
+        } else if (kuhu.equals("nelik")) {
+            m2ngija.setNelik(nelikSumma(t2ringud));
+        }
+        else if (kuhu.equals("yatzy")) {
+            m2ngija.setYatzi(yatzi(t2ringud)); //TODO lisada suur ja väike rida
         }
     }
 
-    public int paarSumma(ArrayList<T2ring> t2ringud) {
+    public int paar(ArrayList<T2ring> t2ringud) {
         int[] lugeja = new int[6];
         int suurimSumma = 0;
 
@@ -84,12 +92,9 @@ public class Paigutaja {
         int paarideSumma = 0;
         int paarid = 0;
 
-        // Count occurrences of each value
         for (T2ring t2ring : t2ringud) {
             lugeja[t2ring.getSilmad() - 1]++;
         }
-
-        // Check if any value occurs exactly twice
         for (int i = 0; i < lugeja.length; i++) {
             if (lugeja[i] >= 2) {
                 // Calculate the sum of the pair
@@ -97,9 +102,44 @@ public class Paigutaja {
                 paarid++;
             }
         }
-
-        // If two pairs are found, return the sum; otherwise, return 0
         return paarid == 2 ? paarideSumma : 0;
+    }
+    public int kolmikSumma(ArrayList<T2ring> t2ringud) {
+        int[] counts = new int[6];
+        for (T2ring t2ring : t2ringud) {
+            counts[t2ring.getSilmad() - 1]++;
+        }
+        for (int i = 0; i < counts.length; i++) {
+            if (counts[i] >= 3) {
+                return (i + 1) * 3;
+            }
+        }
+        return 0;
+    }
+    public int nelikSumma(ArrayList<T2ring> t2ringud) {
+        int[] counts = new int[6];
+        for (T2ring t2ring : t2ringud) {
+            counts[t2ring.getSilmad() - 1]++;
+        }
+        for (int i = 0; i < counts.length; i++) {
+            if (counts[i] >= 4) {
+                return (i + 1) * 4;
+            }
+        }
+        return 0;
+    }
+
+    public int yatzi(ArrayList<T2ring> t2ringud) {
+        int[] counts = new int[6];
+        for (T2ring t2ring : t2ringud) {
+            counts[t2ring.getSilmad() - 1]++;
+        }
+        for (int count : counts) {
+            if (count == 5) {
+                return 100;
+            }
+        }
+        return 0;
     }
 }
 

@@ -44,7 +44,7 @@ public class Main {
                         }
                     }
                 }
-                System.out.println("Millisesse asja soovid summa paigutada?");
+                System.out.println("Millisesse kategooriasse soovid summa paigutada?");
                 String kuhu = scanner.next();
                 paigutaja.paiguta(m2ngija,kuhu,t2ringud);
 
