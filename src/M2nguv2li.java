@@ -1,3 +1,7 @@
+/**
+ * @class M2nguv2li     Et mängu kestus oleks õige (15 roundi)
+ */
+
 public class M2nguv2li {
     private int tyhjadV2ljad;
 

@@ -1,5 +1,12 @@
+/**
+ * @class T2ring    jäljendab tavalist täringut, ning hoiab endas ka indeksit
+ * @method veereta  veeretab täringut
+ */
+
+import java.util.Random;
+
 public class T2ring {
-    private String koht;
+    private final String koht;
     private int silmad;
 
     public T2ring(String koht) {
@@ -11,7 +18,8 @@ public class T2ring {
     }
 
     public void veereta() {
-        this.silmad = (int) (1 + Math.random()*5);
+        Random random = new Random();
+        this.silmad = random.nextInt(6) + 1;
     }
 
     public String getKoht() {

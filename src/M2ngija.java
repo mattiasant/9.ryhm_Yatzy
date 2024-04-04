@@ -1,4 +1,8 @@
-public class M2ngija {
+/**
+ * @class M2ngija   on objekti Mängija loomiseks
+ */
+
+public class M2ngija implements Comparable<M2ngija>{
 
     private String nimi;
     private int yhed;
@@ -21,23 +25,23 @@ public class M2ngija {
 
     public M2ngija(String nimi) {
         this.nimi = nimi;
-        this.yhed = -1;
-        this.kahed = -1;
-        this.kolmed = -1;
-        this.neljad = -1;
-        this.viied = -1;
-        this.kuued = -1;
-        this.boonus = -1;
-        this.paar = -1;
-        this.kakspaar = -1;
-        this.kolmik = -1;
-        this.nelik = -1;
-        this.maja = -1;
-        this.v2ikeRida = -1;
-        this.suurRida = -1;
-        this.juhuslik = -1;
-        this.yatzi = -1;
-        this.summa = getSumma();
+        this.yhed = 0;
+        this.kahed = 0;
+        this.kolmed = 0;
+        this.neljad = 0;
+        this.viied = 0;
+        this.kuued = 0;
+        this.boonus = 0;
+        this.paar = 0;
+        this.kakspaar = 0;
+        this.kolmik = 0;
+        this.nelik = 0;
+        this.maja = 0;
+        this.v2ikeRida = 0;
+        this.suurRida = 0;
+        this.juhuslik = 0;
+        this.yatzi = 0;
+        this.summa = 0;
     }
 
     public void setYhed(int yhed) {
@@ -108,9 +112,34 @@ public class M2ngija {
         return nimi;
     }
 
+    public int getYhed() {
+        return yhed;
+    }
+
+    public int getKahed() {
+        return kahed;
+    }
+
+    public int getKolmed() {
+        return kolmed;
+    }
+
+    public int getNeljad() {
+        return neljad;
+    }
+
+    public int getViied() {
+        return viied;
+    }
+
+    public int getKuued() {
+        return kuued;
+    }
+
     public int getSumma() {
-        summa = yhed+kahed+kolmed+neljad+viied+kuued+boonus+paar+kakspaar+kolmik+
-                +nelik+maja+v2ikeRida+suurRida+juhuslik+yatzi;
+        summa = yhed + kahed + kolmed + neljad + viied + kuued + boonus + paar + kakspaar + kolmik +
+                +nelik + maja + v2ikeRida + suurRida + juhuslik + yatzi;
+        this.summa = summa;
         return summa;
     }
 
@@ -118,23 +147,13 @@ public class M2ngija {
     public String toString() {
         return "M2ngija{" +
                 "nimi='" + nimi + '\'' +
-                ", yhed=" + yhed +
-                ", kahed=" + kahed +
-                ", kolmed=" + kolmed +
-                ", neljad=" + neljad +
-                ", viied=" + viied +
-                ", kuued=" + kuued +
-                ", boonus=" + boonus +
-                ", paar=" + paar +
-                ", kakspaar=" + kakspaar +
-                ", kolmik=" + kolmik +
-                ", nelik=" + nelik +
-                ", maja=" + maja +
-                ", v2ikeRida=" + v2ikeRida +
-                ", suurRida=" + suurRida +
-                ", juhuslik=" + juhuslik +
-                ", yatzi=" + yatzi +
                 ", summa=" + summa +
                 '}';
+    }
+
+
+    @Override
+    public int compareTo(M2ngija o) {
+        return Integer.compare(this.getSumma(),o.getSumma());
     }
 }
