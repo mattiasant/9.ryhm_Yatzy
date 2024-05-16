@@ -8,6 +8,10 @@ Projekti etapid olid järgmised:
 5.	Mängija valikute teostamine.
 6.	Testimine ja silumine.
 7.	Viimistlemine.
+8.	Graafika lisamine
+9.	Spritede otsimine ja redigeerimine
+10.	Funktsionaalsuse lisamine
+11.	Testimine ja silumine.
 Projekti teostamise mured lahendasime ChatGPT abil.
 Orienteeruv ajakulu, mis kulus projekti teostamiseks oli ca 6 päeva.
 Rühmatöö õnnestus, kuna lõpptulemusena valmis toimiv mäng.
