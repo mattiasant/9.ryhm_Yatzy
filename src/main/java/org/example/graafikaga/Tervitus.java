@@ -1,42 +1,40 @@
 package org.example.graafikaga;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 //Icon designed by Freepik
 
 public class Tervitus extends Application {
 
-    private static final String[] skoorNimetus = {"Ühed", "Kahed","Kolmed","Neljad","Viied","Kuued",
-            "Summa", "Boonus", "Paar","Kaks paari","Kolmik","Nelik","Väike rida",
-            "Suur rida", "Maja", "Yatzy","Juhuslik","Summa"};
+    private static final String[] skoorNimetus = {"Ühed", "Kahed", "Kolmed", "Neljad", "Viied", "Kuued",
+            "Summa", "Boonus", "Paar", "Kaks paari", "Kolmik", "Nelik", "Väike rida",
+            "Suur rida", "Maja", "Yatzy", "Juhuslik", "Summa"};
 
     @Override
     public void start(Stage primaryStage) {
         // Creating the initial scene
         Scene tervitusScene = createTervitusScene(primaryStage);
-        Image ikoon = new Image(getClass().getResourceAsStream("/viirus.png"));
+        Image ikoon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/viirus.png")));
 
         primaryStage.setTitle("Yatzy Javas, rühm 9 ithink");
         primaryStage.getIcons().add(ikoon);
@@ -49,11 +47,11 @@ public class Tervitus extends Application {
         VBox root = new VBox(10);
         root.setStyle("-fx-background-color: white;");
         root.setPrefSize(900, 600);
-        root.setAlignment(javafx.geometry.Pos.CENTER);
+        root.setAlignment(Pos.CENTER);
 
         // Adding text
         Label tervitus = new Label("Yatzy");
-        tervitus.setFont(javafx.scene.text.Font.font(60));
+        tervitus.setFont(Font.font(60));
 
         // Adding a button
         Button nextButton = new Button("Edasi");
@@ -129,6 +127,7 @@ public class Tervitus extends Application {
 
 
     public Scene createScoreGridScene(Stage primaryStage, List<M2ngija> m2ngijad) throws IOException {
+        Button stopRollingButton = new Button("Stop Rolling");
         BorderPane borderPane = new BorderPane();
         borderPane.setStyle("-fx-background-color: lightgray;");
 
@@ -141,7 +140,7 @@ public class Tervitus extends Application {
             if (row == 0) {
                 playerName = "\t"; // Leave first row blank
             } else {
-                playerName = m2ngijad.get(row-1).getNimi(); // Assign player names
+                playerName = m2ngijad.get(row - 1).getNimi(); // Assign player names
             }
             Label nameLabel = new Label(playerName);
             playerNamesVBox.getChildren().add(nameLabel);
@@ -168,10 +167,10 @@ public class Tervitus extends Application {
         HBox diceImagesHBox = new HBox();
         diceImagesHBox.setSpacing(100);
         diceImagesHBox.setAlignment(Pos.BOTTOM_CENTER);
-        Image diceImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/tvd.png")));
         List<T2ring> t2ringList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            T2ring t2ring = new T2ring("" + (i+1));
+            Image diceImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/tvd.png")));
+            T2ring t2ring = new T2ring("" + (i + 1));
             t2ringList.add(t2ring);
             ImageView imageView = new ImageView(diceImage);
             imageView.setFitHeight(80);
@@ -183,21 +182,82 @@ public class Tervitus extends Application {
         checkboxesHBox.setAlignment(Pos.CENTER);
         checkboxesHBox.setSpacing(10);
 
+        List<CheckBox> checkboxes = new ArrayList<>();
         // Add checkboxes
         for (int i = 0; i < 5; i++) {
-            CheckBox checkBox = new CheckBox("Keep Die " + (i+1));
+            CheckBox checkBox = new CheckBox("Keep Die " + (i + 1));
+            checkboxes.add(checkBox);
             checkboxesHBox.getChildren().add(checkBox);
         }
 
         centerVBox.getChildren().addAll(diceImagesHBox, checkboxesHBox);
+
+        // Define a ComboBox variable
+        ComboBox<String> dropdownMenu = new ComboBox<>();
+
+        // Disable the ComboBox initially
+        dropdownMenu.setDisable(true);
+
+        // Add options to the ComboBox
+        dropdownMenu.getItems().addAll("Ühed", "Kahed", "Kolmed", "Neljad", "Viied", "Kuued",
+                "Paar", "Kaks paari", "Kolmik", "Nelik", "Väike rida",
+                "Suur rida", "Maja", "Yatzy", "Juhuslik");
+
+        // Add the ComboBox to the layout
+        centerVBox.getChildren().add(dropdownMenu);
+
+        // Add "Roll unselected dice" button
+        Button rollUnselectedButton = new Button("Roll unselected dice");
+        AtomicInteger rollCount = new AtomicInteger(0); // Counter to keep track of roll count
+        rollUnselectedButton.setOnAction(event -> {
+            // Check if roll count exceeds maximum (3)
+            if (rollCount.get() >= 3) {
+                rollUnselectedButton.setDisable(true); // Disable button after 3 rolls
+                stopRollingButton.setDisable(true);
+                dropdownMenu.setDisable(false);
+                return; // Exit method
+            }
+
+            // Handle the action of rolling unselected dice
+            for (T2ring t2ring : t2ringList) {
+                int index = t2ringList.indexOf(t2ring);
+                if (!checkboxes.get(index).isSelected()) {
+                    t2ring.veereta();
+                    // Update die sprite
+                    Image newDiceImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/tvise.gif")));
+                    ImageView imageView = (ImageView) diceImagesHBox.getChildren().get(index);
+                    imageView.setImage(newDiceImage);
+
+                    // Schedule a task to revert the sprite back to its original image after 1 second
+                    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+                        Image originalDiceImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/tv" + (t2ring.getSilmad()) + ".png")));
+                        imageView.setImage(originalDiceImage);
+                    }));
+                    timeline.play();
+                }
+            }
+
+            // Increment roll count
+            rollCount.incrementAndGet();
+        });
+
+        // Add "Stop Rolling" button
+        stopRollingButton.setOnAction(event -> {
+            // Disable the "Roll Unselected Dice" button
+            rollUnselectedButton.setDisable(true);
+            dropdownMenu.setDisable(false);
+            stopRollingButton.setDisable(false);
+
+
+        });
+
+        centerVBox.getChildren().addAll(rollUnselectedButton, stopRollingButton);
 
         borderPane.setCenter(centerVBox);
 
         Scene scene = new Scene(borderPane, 900, 600);
         return scene;
     }
-
-
 
     public static void main(String[] args) {
         launch(args);

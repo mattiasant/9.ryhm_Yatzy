@@ -27,23 +27,23 @@ public class M2ngija implements Comparable<M2ngija>{
 
     public M2ngija(String nimi) {
         this.nimi = nimi;
-        this.yhed = 0;
-        this.kahed = 0;
-        this.kolmed = 0;
-        this.neljad = 0;
-        this.viied = 0;
-        this.kuued = 0;
-        this.boonus = 0;
-        this.paar = 0;
-        this.kakspaar = 0;
-        this.kolmik = 0;
-        this.nelik = 0;
-        this.maja = 0;
-        this.v2ikeRida = 0;
-        this.suurRida = 0;
-        this.juhuslik = 0;
-        this.yatzi = 0;
-        this.summa = 0;
+        this.yhed = -1;
+        this.kahed = -1;
+        this.kolmed = -1;
+        this.neljad = -1;
+        this.viied = -1;
+        this.kuued = -1;
+        this.boonus = -1;
+        this.paar = -1;
+        this.kakspaar = -1;
+        this.kolmik = -1;
+        this.nelik = -1;
+        this.maja = -1;
+        this.v2ikeRida = -1;
+        this.suurRida = -1;
+        this.juhuslik = -1;
+        this.yatzi = -1;
+        this.summa = -1;
     }
 
     public void setYhed(int yhed) {
