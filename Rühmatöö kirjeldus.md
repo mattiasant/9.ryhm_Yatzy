@@ -12,6 +12,7 @@ Projekti etapid olid järgmised:
 9.	Spritede otsimine ja redigeerimine
 10.	Funktsionaalsuse lisamine
 11.	Testimine ja silumine.
+    
 Kuidas veendusime, et programm töötab korrektselt? Selleks toimus:
 1. Üksikute meetodite testimine
 2. Komponentide katsetamine
