@@ -1,13 +1,18 @@
 package org.example.graafikaga;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -22,6 +27,10 @@ import java.util.Objects;
 //Icon designed by Freepik
 
 public class Tervitus extends Application {
+
+    private static final String[] skoorNimetus = {"Ühed", "Kahed","Kolmed","Neljad","Viied","Kuued",
+            "Summa", "Boonus", "Paar","Kaks paari","Kolmik","Nelik","Väike rida",
+            "Suur rida", "Maja", "Yatzy","Juhuslik","Summa"};
 
     @Override
     public void start(Stage primaryStage) {
@@ -39,7 +48,7 @@ public class Tervitus extends Application {
     private Scene createTervitusScene(Stage primaryStage) {
         VBox root = new VBox(10);
         root.setStyle("-fx-background-color: white;");
-        root.setPrefSize(800, 600);
+        root.setPrefSize(900, 600);
         root.setAlignment(javafx.geometry.Pos.CENTER);
 
         // Adding text
@@ -63,7 +72,7 @@ public class Tervitus extends Application {
     private Scene createPlayerCountScene(Stage primaryStage) {
         VBox layout = new VBox(10); // Vertical layout
         layout.setStyle("-fx-background-color: lightgray;");
-        layout.setPrefSize(800, 600);
+        layout.setPrefSize(900, 600);
 
         Label label = new Label("Sisesta mängija arv:");
         TextField textField = new TextField();
@@ -83,7 +92,7 @@ public class Tervitus extends Application {
     private Scene createPlayerNamesScene(Stage primaryStage, int numberOfPlayers) {
         VBox layout = new VBox(10); // Vertical layout
         layout.setStyle("-fx-background-color: lightblue;");
-        layout.setPrefSize(800, 600);
+        layout.setPrefSize(900, 600);
 
         List<M2ngija> m2ngijad = new ArrayList<>();
         // Add labels and text fields for player names
@@ -119,11 +128,14 @@ public class Tervitus extends Application {
     }
 
 
-    private Scene createScoreGridScene(Stage primaryStage, List<M2ngija> m2ngijad) throws IOException {
-        GridPane gridPane = new GridPane();
-        gridPane.setStyle("-fx-background-color: lightgray;");
+    public Scene createScoreGridScene(Stage primaryStage, List<M2ngija> m2ngijad) throws IOException {
+        BorderPane borderPane = new BorderPane();
+        borderPane.setStyle("-fx-background-color: lightgray;");
 
-        // Add player names in the first column
+        // Create VBox for player names
+        VBox playerNamesVBox = new VBox();
+        playerNamesVBox.setPadding(new Insets(10));
+        playerNamesVBox.setSpacing(5);
         for (int row = 0; row <= m2ngijad.size(); row++) {
             String playerName;
             if (row == 0) {
@@ -132,38 +144,60 @@ public class Tervitus extends Application {
                 playerName = m2ngijad.get(row-1).getNimi(); // Assign player names
             }
             Label nameLabel = new Label(playerName);
-            gridPane.add(nameLabel, 0, row);
+            playerNamesVBox.getChildren().add(nameLabel);
         }
+        borderPane.setLeft(playerNamesVBox);
+
+        // Create HBox for labels
+        HBox labelsHBox = new HBox();
+        labelsHBox.setPadding(new Insets(10));
+        labelsHBox.setSpacing(10);
 
         // Create labels for the grid
-        String[] skoorNimetus = {"Ühed", "Kahed","Kolmed","Neljad","Viied","Kuued",
-            "Summa", "Boonus", "Paar","Kaks paari","Kolmik","Nelik","Väike rida",
-            "Suur rida", "Maja", "Yatzy","Juhuslik","Summa"};
-        for (int row = 0; row <= m2ngijad.size(); row++) {
-            for (int col = 1; col < 18; col++) {
-                if (row == 0) {
-                    Label label = new Label(skoorNimetus[col - 1] + "  ");
-                    gridPane.add(label, col, row);
-                } else {
-
-                    Label label = new Label("  -- ");
-                    gridPane.add(label, col, row);
-                }
-            }
+        for (int col = 0; col < 18; col++) {
+            Label label = new Label(skoorNimetus[col]);
+            labelsHBox.getChildren().add(label);
         }
 
-        Image diceImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/tvise.gif")));
+        borderPane.setTop(labelsHBox);
 
+        // Add dice images
+        VBox centerVBox = new VBox();
+        centerVBox.setAlignment(Pos.CENTER);
+
+        HBox diceImagesHBox = new HBox();
+        diceImagesHBox.setSpacing(100);
+        diceImagesHBox.setAlignment(Pos.BOTTOM_CENTER);
+        Image diceImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/tvd.png")));
+        List<T2ring> t2ringList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
+            T2ring t2ring = new T2ring("" + (i+1));
+            t2ringList.add(t2ring);
             ImageView imageView = new ImageView(diceImage);
-            imageView.setFitHeight(50);
-            imageView.setFitWidth(50);
-            gridPane.add(imageView, i + 1, m2ngijad.size() + 1);
+            imageView.setFitHeight(80);
+            imageView.setFitWidth(80);
+            diceImagesHBox.getChildren().add(imageView);
         }
 
-        Scene scene = new Scene(gridPane, 800, 600);
+        HBox checkboxesHBox = new HBox();
+        checkboxesHBox.setAlignment(Pos.CENTER);
+        checkboxesHBox.setSpacing(10);
+
+        // Add checkboxes
+        for (int i = 0; i < 5; i++) {
+            CheckBox checkBox = new CheckBox("Keep Die " + (i+1));
+            checkboxesHBox.getChildren().add(checkBox);
+        }
+
+        centerVBox.getChildren().addAll(diceImagesHBox, checkboxesHBox);
+
+        borderPane.setCenter(centerVBox);
+
+        Scene scene = new Scene(borderPane, 900, 600);
         return scene;
     }
+
+
 
     public static void main(String[] args) {
         launch(args);
