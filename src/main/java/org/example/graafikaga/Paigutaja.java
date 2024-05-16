@@ -8,6 +8,8 @@ package org.example.graafikaga;
  *
  */
 
+import javafx.scene.control.Alert;
+
 import java.util.ArrayList;
 
 
@@ -16,71 +18,79 @@ public class Paigutaja {
     public Paigutaja() {
     }
 
-    public void paiguta(M2ngija m2ngija, String kuhu, ArrayList<T2ring> t2ringud) {
-        int summa = 0;
-        switch (kuhu) {
-            case "ühed" -> {
-                for (T2ring t2ring : t2ringud) {
-                    if (t2ring.getSilmad() == 1) {
-                        summa += 1;
+    public void paiguta(M2ngija m2ngija, String kuhu, ArrayList<T2ring> t2ringud) throws AlreadyAValueError {
+
+        if (m2ngija.getValue(kuhu) != -1) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Selection");
+            alert.setHeaderText(null);
+            alert.setContentText("Seal juba on väärtus.");
+            alert.showAndWait();
+            throw new AlreadyAValueError();
+        } else {
+            int summa = 0;
+            switch (kuhu) {
+                case "Ühed" -> {
+                    for (T2ring t2ring : t2ringud) {
+                        if (t2ring.getSilmad() == 1) {
+                            summa += 1;
+                        }
                     }
+                    m2ngija.setYhed(summa);
                 }
-                m2ngija.setYhed(summa);
-            }
-            case "kahed" -> {
-                for (T2ring t2ring : t2ringud) {
-                    if (t2ring.getSilmad() == 2) {
-                        summa += 2;
+                case "Kahed" -> {
+                    for (T2ring t2ring : t2ringud) {
+                        if (t2ring.getSilmad() == 2) {
+                            summa += 2;
+                        }
                     }
+                    m2ngija.setKahed(summa);
                 }
-                m2ngija.setKahed(summa);
-            }
-            case "kolmed" -> {
-                for (T2ring t2ring : t2ringud) {
-                    if (t2ring.getSilmad() == 3) {
-                        summa += 3;
+                case "Kolmed" -> {
+                    for (T2ring t2ring : t2ringud) {
+                        if (t2ring.getSilmad() == 3) {
+                            summa += 3;
+                        }
                     }
+                    m2ngija.setKolmed(summa);
                 }
-                m2ngija.setKolmed(summa);
-            }
-            case "neljad" -> {
-                for (T2ring t2ring : t2ringud) {
-                    if (t2ring.getSilmad() == 4) {
-                        summa += 4;
+                case "Neljad" -> {
+                    for (T2ring t2ring : t2ringud) {
+                        if (t2ring.getSilmad() == 4) {
+                            summa += 4;
+                        }
                     }
+                    m2ngija.setNeljad(summa);
                 }
-                m2ngija.setNeljad(summa);
-            }
-            case "viied" -> {
-                for (T2ring t2ring : t2ringud) {
-                    if (t2ring.getSilmad() == 5) {
-                        summa += 5;
+                case "Viied" -> {
+                    for (T2ring t2ring : t2ringud) {
+                        if (t2ring.getSilmad() == 5) {
+                            summa += 5;
+                        }
                     }
+                    m2ngija.setViied(summa);
                 }
-                m2ngija.setViied(summa);
-            }
-            case "kuued" -> {
-                for (T2ring t2ring : t2ringud) {
-                    if (t2ring.getSilmad() == 6) {
-                        summa += 6;
+                case "Kuued" -> {
+                    for (T2ring t2ring : t2ringud) {
+                        if (t2ring.getSilmad() == 6) {
+                            summa += 6;
+                        }
                     }
+                    m2ngija.setKuued(summa);
                 }
-                m2ngija.setKuued(summa);
+                case "Paar" -> m2ngija.setPaar(paar(t2ringud));
+                case "Kaks paari" -> m2ngija.setKakspaar(kaksPaar(t2ringud));
+                case "Kolmik" -> m2ngija.setKolmik(kolmikSumma(t2ringud));
+                case "Nelik" -> m2ngija.setNelik(nelikSumma(t2ringud));
+                case "Väike rida" -> m2ngija.setV2ikeRida(v2ikeRida(t2ringud));
+                case "Suur rida" -> m2ngija.setSuurRida(suurRida(t2ringud));
+                case "Yatzy" -> m2ngija.setYatzi(yatzy(t2ringud));
+                case "Juhuslik" -> m2ngija.setJuhuslik(juhuslik(t2ringud));
+                case "Maja" -> m2ngija.setMaja(maja(t2ringud));
             }
-            case "paar" -> m2ngija.setPaar(paar(t2ringud));
-            case "2paar" -> m2ngija.setKakspaar(kaksPaar(t2ringud));
-            case "kolmik" -> m2ngija.setKolmik(kolmikSumma(t2ringud));
-            case "nelik" -> m2ngija.setNelik(nelikSumma(t2ringud));
-            case "väikerida" -> m2ngija.setV2ikeRida(v2ikeRida(t2ringud));
-            case "suurrida" -> m2ngija.setSuurRida(suurRida(t2ringud));
-            case "yatzy" -> m2ngija.setYatzi(yatzi(t2ringud));
-            case "juhuslik" -> m2ngija.setJuhuslik(juhuslik(t2ringud));
-            case "maja" -> m2ngija.setMaja(maja(t2ringud));
-            default -> System.out.println("error, ei saa punkte");
         }
     }
-
-    public int paar(ArrayList<T2ring> t2ringud) {
+    private int paar(ArrayList<T2ring> t2ringud) {
         int[] lugeja = new int[6];
         int suurimSumma = 0;
 
@@ -96,7 +106,7 @@ public class Paigutaja {
         return suurimSumma;
     }
 
-    public int kaksPaar(ArrayList<T2ring> t2ringud) {
+    private int kaksPaar(ArrayList<T2ring> t2ringud) {
         int[] lugeja = new int[6];
         int paarideSumma = 0;
         int paarid = 0;
@@ -113,7 +123,7 @@ public class Paigutaja {
         return paarid == 2 ? paarideSumma : 0;
     }
 
-    public int kolmikSumma(ArrayList<T2ring> t2ringud) {
+    private int kolmikSumma(ArrayList<T2ring> t2ringud) {
         int[] counts = new int[6];
         for (T2ring t2ring : t2ringud) {
             counts[t2ring.getSilmad() - 1]++;
@@ -126,7 +136,7 @@ public class Paigutaja {
         return 0;
     }
 
-    public int nelikSumma(ArrayList<T2ring> t2ringud) {
+    private int nelikSumma(ArrayList<T2ring> t2ringud) {
         int[] counts = new int[6];
         for (T2ring t2ring : t2ringud) {
             counts[t2ring.getSilmad() - 1]++;
@@ -139,7 +149,7 @@ public class Paigutaja {
         return 0;
     }
 
-    public int v2ikeRida(ArrayList<T2ring> t2ringud) {
+    private int v2ikeRida(ArrayList<T2ring> t2ringud) {
         int[] counts = new int[6];
 
         for (T2ring t2ring : t2ringud) {
@@ -151,7 +161,7 @@ public class Paigutaja {
         } else return 0;
     }
 
-    public int suurRida(ArrayList<T2ring> t2ringud) {
+    private int suurRida(ArrayList<T2ring> t2ringud) {
         int[] counts = new int[6];
         for (T2ring t2ring : t2ringud) {
             counts[t2ring.getSilmad() - 1]++;
@@ -161,7 +171,7 @@ public class Paigutaja {
         } else return 0;
     }
 
-    public int maja(ArrayList<T2ring> t2ringud) {
+    private int maja(ArrayList<T2ring> t2ringud) {
         boolean paar = false;
         boolean kolmik = false;
         int[] counts = new int[6];
@@ -188,7 +198,7 @@ public class Paigutaja {
         return 0;
     }
 
-    public int juhuslik(ArrayList<T2ring> t2ringud) {
+    private int juhuslik(ArrayList<T2ring> t2ringud) {
         int summa = 0;
         for (T2ring t2ring : t2ringud) {
             summa += t2ring.getSilmad();
@@ -196,7 +206,7 @@ public class Paigutaja {
         return summa;
     }
 
-    public int yatzi(ArrayList<T2ring> t2ringud) {
+    private int yatzy(ArrayList<T2ring> t2ringud) {
         int[] counts = new int[6];
         for (T2ring t2ring : t2ringud) {
             counts[t2ring.getSilmad() - 1]++;

@@ -6,7 +6,7 @@ package org.example.graafikaga;
 
 public class M2ngija implements Comparable<M2ngija>{
 
-    private String nimi;
+    private final String nimi;
     private int yhed;
     private int kahed;
     private int kolmed;
@@ -141,7 +141,6 @@ public class M2ngija implements Comparable<M2ngija>{
     public int getSumma() {
         summa = yhed + kahed + kolmed + neljad + viied + kuued + boonus + paar + kakspaar + kolmik +
                 +nelik + maja + v2ikeRida + suurRida + juhuslik + yatzi;
-        this.summa = summa;
         return summa;
     }
 
@@ -157,6 +156,28 @@ public class M2ngija implements Comparable<M2ngija>{
     @Override
     public int compareTo(M2ngija o) {
         return Integer.compare(this.getSumma(),o.getSumma());
+    }
+
+    public int getValue(String kuhu) {
+        return switch (kuhu) {
+            case "Ühed" -> this.yhed;
+            case "Kahed" -> this.kahed;
+            case "Kolmed" -> this.kolmed;
+            case "Neljad" -> this.neljad;
+            case "Viied" -> this.viied;
+            case "Kuued" -> this.kuued;
+            case "Paar" -> this.paar;
+            case "Kaks paari" -> this.kakspaar;
+            case "Kolmik" -> this.kolmik;
+            case "Nelik" -> this.nelik;
+            case "Väike rida" -> this.v2ikeRida;
+            case "Suur rida" -> this.suurRida;
+            case "Maja" -> this.maja;
+            case "Yatzy" -> this.yatzi;
+            case "Juhuslik" -> this.juhuslik;
+            // Add cases for other options as needed
+            default -> throw new IllegalStateException("Unexpected value: " + kuhu);
+        };
     }
 }
 

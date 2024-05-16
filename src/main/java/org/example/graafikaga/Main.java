@@ -32,7 +32,7 @@ import java.util.Scanner;
  */
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws AlreadyAValueError {
         Scanner scanner = new Scanner(System.in);
         String j2ta = "";
         int round = 1;
