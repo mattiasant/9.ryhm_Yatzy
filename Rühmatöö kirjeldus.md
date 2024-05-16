@@ -16,6 +16,7 @@ Kuidas veendusime, et programm töötab korrektselt? Selleks toimus:
 1. Üksikute meetodite testimine
 2. Komponentide katsetamine
 3. Tervikluse testimine.
+   
 Projekti teostamise mured lahendasime ChatGPT abil.
 Orienteeruv ajakulu, mis kulus projekti teostamiseks oli ca 6 päeva.
 Rühmatöö õnnestus, kuna lõpptulemusena valmis toimiv mäng.
